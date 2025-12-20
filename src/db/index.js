@@ -11,4 +11,4 @@ const connectDB=async () =>{
     }
 }
 
-export default connectDB;
+export default connectDB;//it return the promise that is going to catch in index.js main file
