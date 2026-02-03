@@ -58,10 +58,10 @@ const userSchema=new Schema(
         timestamps:true
      }
 )
-userSchema.pre("save", async function(next){// in this hooks is used for just checking it is like middleware but here we used  normal function beacuse arrow functionn dont give this  
-    if(!this.isModified("password")) return next();
-    this.password=bcrypt.hash(this.password,10)
-    next()
+userSchema.pre("save", async function(){// in this hooks is used for just checking it is like middleware but here we used  normal function beacuse arrow functionn dont give this  
+    if(!this.isModified("password")) return ;
+    this.password=await bcrypt.hash(this.password,10)
+    
 })
 userSchema.methods.isPasswordCorrect = async function(password){
     return await bcrypt.compare(password, this.password)
@@ -95,4 +95,4 @@ userSchema.methods.generateRefreshToken = function(){
 }
 
 
-export const Users=mongoose.model("User",userSchema)
+export const User=mongoose.model("User",userSchema)
