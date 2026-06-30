@@ -18,10 +18,32 @@ app.use(cookieParser())//If browser sends a cookie… please read it and put it 
 //routes import
 
 import userRouter from './routes/user.routes.js'
+import videoRouter from './routes/video.routes.js'
 
 //routes declaration
 
 app.use("/api/v1/users",userRouter)
+app.use("/api/v1/videos",videoRouter)
+
+// ─── Global error handler ───
+import { ApiError } from "./utils/ApiError.js";
+
+app.use((err, req, res, next) => {
+    if (err instanceof ApiError) {
+        return res.status(err.statusCode).json({
+            statusCode: err.statusCode,
+            message: err.message,
+            success: false,
+            errors: err.errors,
+        });
+    }
+    console.error("Unhandled error:", err);
+    return res.status(500).json({
+        statusCode: 500,
+        message: "Internal Server Error",
+        success: false,
+    });
+});
 
 
 
